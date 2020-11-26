@@ -457,7 +457,7 @@ contract OasisNFTFarm is Ownable {
     
     // claim random nft's from available balance
     function claimRandom() public {
-        for(uint64 i; i < nftCount(); i++) {
+        for(uint64 i; i < nftPoolLength(); i++) {
             NFTInfo storage nft = nftInfo[i];
             uint256 userBalance = pointsBalance(msg.sender);
             uint256 maxQty = userBalance.div(nft.price);        // max quantity of nfts user can claim

@@ -7,6 +7,12 @@ An Oasis NFT Farm  by staking ERC20 Token
 [TestDemo video](https://drive.google.com/file/d/1h1Xmf1iqTTbmIcguAwhQE_K5qeF_Gds4/view?usp=sharing) <br>
 [CoreFeature video](https://drive.google.com/file/d/1GUqVjkfHYmNEFYqkpNq23_k3Xj5eTGsq/view?usp=sharing)
 
+
+
+OasisTestToken address: 0xc0beca469ba923b4dd31cf1eb89a737fedc78c33 <br>
+OasisTestNFT address: 0xaee6120f7c721e926584dd52811611b151877d43 <br>
+OasisNFTFarm address : 0xe8e610630a2465bb66af312bb2d0ec4b01c1cce0
+
 ## Overall Process Flow:
  * Deploy NFTFarm Contract with two constructor emissionRate which is  the rate of points generating per LP token per second staked, and lpToken contract address.
  * Administrator use addNFT function to transfer NFT from ERC1155 Contract.
