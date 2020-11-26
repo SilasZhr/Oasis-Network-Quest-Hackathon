@@ -3,7 +3,9 @@
 
 An Oasis NFT Farm  by staking ERC20 Token
 
-**Video Explanation:** 
+**Video Explanation:**   
+[TestDemo video](https://drive.google.com/file/d/1h1Xmf1iqTTbmIcguAwhQE_K5qeF_Gds4/view?usp=sharing) <br>
+[CoreFeature video](https://drive.google.com/file/d/1GUqVjkfHYmNEFYqkpNq23_k3Xj5eTGsq/view?usp=sharing)
 
 ## Overall Process Flow:
  * Deploy NFTFarm Contract with two constructor emissionRate which is  the rate of points generating per LP token per second staked, and lpToken contract address.
@@ -42,7 +44,7 @@ Can only be called by owner. To add ERC-1155 NFT to be farmed by others.
 Owner must have approved contract to transfer NFT before calling this function.
 
 ```
-function deposit(uint256 _amount) external;
+function stake(uint256 _amount) external;
 ```
 Called by user to stake _amount of LP tokens in the contract.
 User must have approved contract to spend at least _amount of LP tokens.

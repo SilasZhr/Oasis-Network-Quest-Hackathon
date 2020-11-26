@@ -360,7 +360,7 @@ interface IERC1155 {
 
 
 
-contract NonFungibleFarm is Ownable {
+contract OasisNFTFarm is Ownable {
     using SafeMath for uint256;
     
     struct UserInfo {
@@ -408,7 +408,7 @@ contract NonFungibleFarm is Ownable {
         }));
     }
     
-    function deposit(uint256 _amount) external {
+    function stake(uint256 _amount) external {
         lpToken.transferFrom(
             msg.sender,
             address(this),
@@ -501,7 +501,7 @@ contract NonFungibleFarm is Ownable {
         return now.sub(user.lastUpdateAt).mul(emissionRate).mul(user.amount);
     }
     
-    function nftCount() public view returns (uint256) {
+    function nftPoolLength() public view returns (uint256) {
         return nftInfo.length;
     }
     
