@@ -1,5 +1,6 @@
 # Oasis-Network-Quest-Hackathon
 
+I planed to fork the uniswap or sushiswap at first, but there are some problems that I can't deploy my contract in oasis paratime(but I can do that in remix & ethereum).So I changed my plan to build a NFTFarm in Oasis Paratime. BTW, I'm a student and I want  to win the ROSE University bonus prize. I have registered with my .edu email address which  is  4211********@sj**.edu.cn（for data privacy as Oasis）. 
 
 An Oasis NFT Farm  by staking ERC20 Token
 
