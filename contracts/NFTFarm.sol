@@ -365,8 +365,8 @@ contract OasisNFTFarm is Ownable {
     
     struct UserInfo {
         uint256 amount;         // current staked LP
-        uint256 lastUpdateAt;   // unix timestamp for last details update (when pointsDebt calculated)
-        uint256 pointsDebt;     // total points collected before latest deposit
+        uint256 lastUpdateAt;   // unix timestamp for last details update (when points calculated)
+        uint256 points;     // total points collected before latest deposit
     }
     
     struct NFTInfo {
@@ -419,7 +419,7 @@ contract OasisNFTFarm is Ownable {
         
         // already deposited before
         if(user.amount != 0) {
-            user.pointsDebt = pointsBalance(msg.sender);
+            user.points = pointsBalance(msg.sender);
         }
         user.amount = user.amount.add(_amount);
         user.lastUpdateAt = now;
@@ -433,7 +433,7 @@ contract OasisNFTFarm is Ownable {
         UserInfo storage user = userInfo[msg.sender];
         
         // deduct points
-        user.pointsDebt = pointsBalance(msg.sender).sub(nft.price.mul(_quantity));
+        user.points = pointsBalance(msg.sender).sub(nft.price.mul(_quantity));
         user.lastUpdateAt = now;
         
         // transfer nft
@@ -476,7 +476,7 @@ contract OasisNFTFarm is Ownable {
         require(user.amount >= _amount, "Insufficient staked");
         
         // update userInfo
-        user.pointsDebt = pointsBalance(msg.sender);
+        user.points = pointsBalance(msg.sender);
         user.amount = user.amount.sub(_amount);
         user.lastUpdateAt = now;
         
@@ -494,11 +494,13 @@ contract OasisNFTFarm is Ownable {
     
     function pointsBalance(address userAddress) public view returns (uint256) {
         UserInfo memory user = userInfo[userAddress];
-        return user.pointsDebt.add(_unDebitedPoints(user));
+        return user.points.add(Pending(user));
     }
     
-    function _unDebitedPoints(UserInfo memory user) internal view returns (uint256) {
-        return now.sub(user.lastUpdateAt).mul(emissionRate).mul(user.amount);
+    function Pending(UserInfo memory user) internal view returns (uint256) {
+        uint256 blockTime = block.timestamp;
+        return blockTime.sub(user.lastUpdateAt).mul(emissionRate).mul(user.amount);
+ 
     }
     
     function nftPoolLength() public view returns (uint256) {
@@ -518,4 +520,13 @@ contract OasisNFTFarm is Ownable {
     {
         return bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"));
     }
+
+    function earned(address account) public view returns (uint256) {
+		uint256 blockTime = block.timestamp;
+		return
+			points[account].add(
+				blockTime.sub(lastUpdateTime[account]).mul(1e18).div(864).mul(balanceOf(account).div(rate))
+			);
+	}
+
 }
