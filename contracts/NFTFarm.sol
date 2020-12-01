@@ -419,7 +419,7 @@ contract OasisNFTFarm is Ownable {
         
         // already deposited before
         if(user.amount != 0) {
-            user.points = pointsBalance(msg.sender);
+            user.points = earned(msg.sender);
         }
         user.amount = user.amount.add(_amount);
         user.lastUpdateAt = now;
@@ -429,11 +429,11 @@ contract OasisNFTFarm is Ownable {
     function claim(uint256 _nftIndex, uint256 _quantity) public {
         NFTInfo storage nft = nftInfo[_nftIndex];
         require(nft.remaining > 0, "All NFTs farmed");
-        require(pointsBalance(msg.sender) >= nft.price.mul(_quantity), "Insufficient Points");
+        require(earned(msg.sender) >= nft.price.mul(_quantity), "Insufficient Points");
         UserInfo storage user = userInfo[msg.sender];
         
         // deduct points
-        user.points = pointsBalance(msg.sender).sub(nft.price.mul(_quantity));
+        user.points = earned(msg.sender).sub(nft.price.mul(_quantity));
         user.lastUpdateAt = now;
         
         // transfer nft
@@ -455,28 +455,28 @@ contract OasisNFTFarm is Ownable {
         }
     }
     
-    // claim random nft's from available balance
-    function claimRandom() public {
-        for(uint64 i; i < nftPoolLength(); i++) {
-            NFTInfo storage nft = nftInfo[i];
-            uint256 userBalance = pointsBalance(msg.sender);
-            uint256 maxQty = userBalance.div(nft.price);        // max quantity of nfts user can claim
-            if(nft.remaining > 0 && maxQty > 0) {
-                if(maxQty <= nft.remaining) {
-                    claim(i, maxQty);
-                } else {
-                    claim(i, nft.remaining);
-                }
-            }
-        }
-    }
+    // // claim random nft's from available balance
+    // function claimRandom() public {
+    //     for(uint64 i; i < nftPoolLength(); i++) {
+    //         NFTInfo storage nft = nftInfo[i];
+    //         uint256 userBalance = earned(msg.sender);
+    //         uint256 maxQty = userBalance.div(nft.price);        // max quantity of nfts user can claim
+    //         if(nft.remaining > 0 && maxQty > 0) {
+    //             if(maxQty <= nft.remaining) {
+    //                 claim(i, maxQty);
+    //             } else {
+    //                 claim(i, nft.remaining);
+    //             }
+    //         }
+    //     }
+    // }
     
     function withdraw(uint256 _amount) public {
         UserInfo storage user = userInfo[msg.sender];
         require(user.amount >= _amount, "Insufficient staked");
         
         // update userInfo
-        user.points = pointsBalance(msg.sender);
+        user.points = earned(msg.sender);
         user.amount = user.amount.sub(_amount);
         user.lastUpdateAt = now;
         
@@ -492,12 +492,12 @@ contract OasisNFTFarm is Ownable {
         withdraw(userInfo[msg.sender].amount);
     }
     
-    function pointsBalance(address userAddress) public view returns (uint256) {
+    function earned(address userAddress) public view returns (uint256) {
         UserInfo memory user = userInfo[userAddress];
         return user.points.add(Pending(user));
     }
     
-    function Pending(UserInfo memory user) internal view returns (uint256) {
+    function pending(UserInfo memory user) internal view returns (uint256) {
         uint256 blockTime = block.timestamp;
         return blockTime.sub(user.lastUpdateAt).mul(emissionRate).mul(user.amount);
  
