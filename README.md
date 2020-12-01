@@ -73,7 +73,6 @@ Allow user to claim `_quantity` of NFT at index `_nftIndex` in `nftInfo` array, 
 NFTs are farmed and sent to user address.
 
 
-
 ```
 function withdraw(uint256 _amount) public;
 ```
