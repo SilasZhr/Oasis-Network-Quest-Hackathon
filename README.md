@@ -57,9 +57,14 @@ Called by user to stake _amount of LP tokens in the contract.
 User must have approved contract to spend at least _amount of LP tokens.
 
 ```
-function pointsBalance(address userAddress) public view returns (uint256) 
+function earned(address userAddress) public view returns (uint256) 
 ```
 Dynamic function to get points balance accumulated till now.
+
+```
+function pending(UserInfo memory user) internal view returns (uint256)
+```
+Dynamic function to get  pending points
 
 ```
 function claim(uint256 _nftIndex, uint256 _quantity) public;
@@ -67,10 +72,7 @@ function claim(uint256 _nftIndex, uint256 _quantity) public;
 Allow user to claim `_quantity` of NFT at index `_nftIndex` in `nftInfo` array, if sufficient points accumulated (else transaction reverts).
 NFTs are farmed and sent to user address.
 
-```
-function claimRandom() public;
-```
-Allow user to claim random NFTs from the NFT pool until they exhaust their point balance.
+
 
 ```
 function withdraw(uint256 _amount) public;
